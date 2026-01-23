@@ -1,0 +1,20 @@
+{
+  "cli": {
+    "version": "16.28.0",
+    "requireCommit": false
+  },
+  "build": {
+    "production": {
+      "distribution": "store"
+    },
+    "preview": {
+      "extends": "production",
+      "distribution": "internal"
+    },
+    "development": {
+      "extends": "production",
+      "developmentClient": true,
+      "distribution": "internal"
+    }
+  }
+}

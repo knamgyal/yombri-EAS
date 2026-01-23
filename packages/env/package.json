@@ -1,0 +1,6 @@
+{
+  "name": "@yombri/env",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "dependencies": { "zod": "^3.22.0" }
+}

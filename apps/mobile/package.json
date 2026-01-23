@@ -1,0 +1,43 @@
+{
+  "name": "@yombri/mobile",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@yombri/design-tokens": "workspace:*",
+    "@yombri/native-runtime": "workspace:*",
+    "@yombri/ui-core": "workspace:*",
+    "expo": "~54.0.0",
+    "expo-blur": "~15.0.8",
+    "expo-constants": "~18.0.0",
+    "expo-dev-client": "~6.0.20",
+    "expo-font": "~14.0.11",
+    "expo-linking": "~8.0.0",
+    "expo-local-authentication": "~17.0.8",
+    "expo-router": "~6.0.22",
+    "expo-secure-store": "~15.0.8",
+    "expo-splash-screen": "~31.0.13",
+    "expo-status-bar": "~3.0.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-mmkv": "^4.1.1",
+    "react-native-safe-area-context": "5.6.2",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "15.12.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~19.1.0",
+    "@yombri/tsconfig": "workspace:*",
+    "jest": "^29.0.0",
+    "jest-expo": "~54.0.0",
+    "typescript": "~5.9.3"
+  },
+  "private": true
+}
