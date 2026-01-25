@@ -62,4 +62,4 @@ coverage/
 
 # Editor
 .vscode/
-.idea/
+.idea/package-lock.json

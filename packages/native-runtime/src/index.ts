@@ -1,3 +1,4 @@
-export * from './storage';
-export * from './ThemeProvider';
-export * from './authSecrets';
+export * from "./ThemeProvider";
+export * from "./secureStorage";
+export * from "./storage";
+export * from "./authSecrets";

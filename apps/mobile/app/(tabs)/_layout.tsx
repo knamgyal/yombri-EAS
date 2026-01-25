@@ -5,7 +5,18 @@ import { useTheme } from '@yombri/native-runtime';
 import { TabBarBackground } from '../../components/TabBarBackground';
 
 export default function TabsLayout() {
+<<<<<<< Updated upstream
   const { theme } = useTheme();
+=======
+  const { theme, isReady } = useTheme();
+  const { session, isLoading } = useSession();
+
+  const isAppLoading = !isReady || !theme || isLoading;
+  const shouldRedirect = !isAppLoading && !session;
+
+  if (isAppLoading) return <Text>Loading...</Text>;
+  if (shouldRedirect) return <Redirect href="/(auth)/sign-in" />;
+>>>>>>> Stashed changes
 
   return (
     <Tabs

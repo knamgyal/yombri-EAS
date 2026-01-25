@@ -1,22 +1,18 @@
-// apps/mobile/metro.config.js
-const path = require('path');
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require("expo/metro-config");
+const path = require("path");
 
 const projectRoot = __dirname;
-const monorepoRoot = path.resolve(projectRoot, '../..');
+const monorepoRoot = path.resolve(projectRoot, "../..");
 
 const config = getDefaultConfig(projectRoot);
 
-// Watch the entire monorepo (so packages/* changes are seen)
+// 1) Watch all files within the monorepo
 config.watchFolders = [monorepoRoot];
 
-// Resolve modules from both app and workspace root node_modules
+// 2) Resolve packages from app node_modules first, then monorepo root
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(monorepoRoot, 'node_modules'),
+  path.resolve(projectRoot, "node_modules"),
+  path.resolve(monorepoRoot, "node_modules"),
 ];
-
-// Recommended in many monorepo setups to avoid “wrong node_modules” lookups
-config.resolver.disableHierarchicalLookup = true;
 
 module.exports = config;

@@ -1,7 +1,0 @@
-Repo root: 
-
-pnpm mobile:tunnel:clear
-
-----
-generate file list from a directory: 
- ls -la packages/ui-core/src/icons

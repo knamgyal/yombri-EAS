@@ -1,19 +1,14 @@
 {
   "name": "@yombri/native-runtime",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "src/index.ts",
+  "react-native": "src/index.ts",
   "types": "src/index.ts",
-  "dependencies": {
-    "@yombri/design-tokens": "workspace:*"
-  },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "@react-native-async-storage/async-storage": "*",
-    "react-native-mmkv": "*"
+    "react": "19.1.0",
+    "react-native": "0.81.5"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@yombri/tsconfig": "workspace:*"
+    "@types/react": "~19.1.0"
   }
 }

@@ -13,6 +13,7 @@ export default function ProfileIndexScreen() {
         Account and app preferences.
       </Text>
 
+<<<<<<< Updated upstream
       <Pressable
         onPress={() => router.push('/profile/settings')}
         style={({ pressed }) => [
@@ -29,6 +30,23 @@ export default function ProfileIndexScreen() {
           Theme and preferences
         </Text>
       </Pressable>
+=======
+      <TextInput
+        placeholder="Display name"
+        value={displayName}
+        onChangeText={setDisplayName}
+        style={{ borderWidth: 1, borderColor: "#ddd", padding: 12, borderRadius: 10 }}
+      />
+      <Button title="Save" onPress={save} />
+
+      <Button title="My Tracker" onPress={() => router.push("/(tabs)/profile/tracker")} />
+      <Button title="Blocked users" onPress={() => router.push("/(tabs)/profile/blocked")} />
+      {__DEV__ ? (
+        <Button title="Social debug (dev)" onPress={() => router.push("/(tabs)/profile/social-debug")} />
+      ) : null}
+      <Button title="Sign out" onPress={signOut} />
+      <Text selectable>{log}</Text>
+>>>>>>> Stashed changes
     </View>
   );
 }
