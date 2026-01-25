@@ -63,3 +63,15 @@ coverage/
 # Editor
 .vscode/
 .idea/package-lock.json
+
+
+# Local/backup assets (do not commit)
+apps/mobile/assets/*_old.png
+apps/mobile/assets/* yombri.png
+apps/mobile/assets/1536 x 1024.png
+apps/mobile/assets/adaptive-icon-blue-Copy.png
+# Local/backup assets (do not commit)
+apps/mobile/assets/*_old.png
+apps/mobile/assets/* yombri.png
+apps/mobile/assets/1536 x 1024.png
+apps/mobile/assets/adaptive-icon-blue-Copy.png
