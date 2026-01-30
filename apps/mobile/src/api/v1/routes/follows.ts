@@ -1,4 +1,3 @@
-// apps/mobile/src/api/v1/routes/follows.ts
 import { supabase } from "@/lib/supabase";
 
 async function requireUserId() {
@@ -8,8 +7,13 @@ async function requireUserId() {
   return data.user.id;
 }
 
+type UserListRow = {
+  user_id: string;
+  display_name: string | null;
+  avatar_path: string | null;
+};
+
 export const follows = {
-  // POST /v1/follows
   async follow(targetUserId: string) {
     const userId = await requireUserId();
 
@@ -23,14 +27,12 @@ export const follows = {
     return data;
   },
 
-  // DELETE /v1/follows/{id}
   async unfollowById(followId: string) {
     const { error } = await supabase.from("follows").delete().eq("id", followId);
     if (error) throw error;
     return { ok: true as const };
   },
 
-  // DELETE /v1/follows?following_id=...
   async unfollowByUserId(targetUserId: string) {
     const userId = await requireUserId();
 
@@ -44,7 +46,6 @@ export const follows = {
     return { ok: true as const };
   },
 
-  // Helper: returns follow row id if currently following
   async myFollowRow(targetUserId: string) {
     const userId = await requireUserId();
 
@@ -80,5 +81,55 @@ export const follows = {
 
     if (error) throw error;
     return Boolean(data);
+  },
+
+  async listFollowers(): Promise<UserListRow[]> {
+    const userId = await requireUserId();
+
+    const { data: edges, error: edgeErr } = await supabase
+      .from("follows")
+      .select("follower_id, created_at")
+      .eq("following_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (edgeErr) throw edgeErr;
+
+    const ids = (edges ?? []).map((r) => r.follower_id).filter(Boolean);
+    if (ids.length === 0) return [];
+
+    const { data: profiles, error: profErr } = await supabase
+      .from("user_profiles")
+      .select("user_id, display_name, avatar_path")
+      .in("user_id", ids);
+
+    if (profErr) throw profErr;
+
+    const byId = new Map((profiles ?? []).map((p) => [p.user_id, p]));
+    return ids.map((id) => byId.get(id)).filter(Boolean) as UserListRow[];
+  },
+
+  async listFollowing(): Promise<UserListRow[]> {
+    const userId = await requireUserId();
+
+    const { data: edges, error: edgeErr } = await supabase
+      .from("follows")
+      .select("following_id, created_at")
+      .eq("follower_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (edgeErr) throw edgeErr;
+
+    const ids = (edges ?? []).map((r) => r.following_id).filter(Boolean);
+    if (ids.length === 0) return [];
+
+    const { data: profiles, error: profErr } = await supabase
+      .from("user_profiles")
+      .select("user_id, display_name, avatar_path")
+      .in("user_id", ids);
+
+    if (profErr) throw profErr;
+
+    const byId = new Map((profiles ?? []).map((p) => [p.user_id, p]));
+    return ids.map((id) => byId.get(id)).filter(Boolean) as UserListRow[];
   },
 };

@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "e181db6b-4daa-4b30-b614-64c302e0fb42"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.knamgyal.yombri",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}

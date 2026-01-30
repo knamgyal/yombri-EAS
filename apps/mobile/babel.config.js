@@ -1,19 +1,19 @@
-// apps/mobile/babel.config.js
 module.exports = function (api) {
   api.cache(true);
 
   return {
-    presets: ["babel-preset-expo"], // Expo default [web:362][web:367]
+    presets: ["babel-preset-expo"],
     plugins: [
       [
         "module-resolver",
         {
+          root: ["./"],
           extensions: [".tsx", ".ts", ".js", ".jsx", ".json"],
           alias: {
-            "@": "./src",
-          },
-        },
-      ],
-    ],
+            "@": "./src"
+          }
+        }
+      ]
+    ]
   };
 };

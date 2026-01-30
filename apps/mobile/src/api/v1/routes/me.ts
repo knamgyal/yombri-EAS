@@ -1,71 +1,58 @@
-// apps/mobile/src/api/v1/routes/me.ts
 import { supabase } from "@/lib/supabase";
 
-export type MeResponse = {
-  userId: string;
-  email?: string | null;
-  profile: {
-    display_name: string | null;
-    avatar_url: string | null;
-  } | null;
+export type MePatchInput = {
+  display_name?: string | null;
+  avatar_path?: string | null;
+
+  // Optional backwards compatibility if older UI still sends avatar_url:
+  avatar_url?: string | null;
 };
 
+async function requireUserId(): Promise<string> {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) throw error;
+  const uid = data.user?.id;
+  if (!uid) throw new Error("Not authenticated");
+  return uid;
+}
+
 export const me = {
-  // DEV ONLY: verify blocked users cannot read profiles
-  async getProfileByUserId(userId: string) {
-    if (!__DEV__) throw new Error("DEV ONLY: getProfileByUserId is disabled in production");
+  async getProfile() {
+    const uid = await requireUserId();
 
     const { data, error } = await supabase
       .from("user_profiles")
-      .select("user_id, display_name, avatar_url")
-      .eq("user_id", userId);
-
-    if (error) throw error;
-    return data ?? [];
-  },
-
-  // GET /v1/me
-  async get(): Promise<MeResponse> {
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) throw userErr;
-    if (!userData.user) throw new Error("No authed user");
-
-    const userId = userData.user.id;
-
-    const { data: profile, error: profileErr } = await supabase
-      .from("user_profiles")
-      .select("display_name, avatar_url")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (profileErr) throw profileErr;
-
-    return {
-      userId,
-      email: userData.user.email,
-      profile: profile ?? null,
-    };
-  },
-
-  // PATCH /v1/me
-  async patch(input: { display_name?: string | null; avatar_url?: string | null }) {
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) throw userErr;
-    if (!userData.user) throw new Error("No authed user");
-
-    const userId = userData.user.id;
-
-    const { data, error } = await supabase
-      .from("user_profiles")
-      .update({
-        ...(input.display_name !== undefined ? { display_name: input.display_name } : {}),
-        ...(input.avatar_url !== undefined ? { avatar_url: input.avatar_url } : {}),
-      })
-      .eq("user_id", userId)
-      .select("display_name, avatar_url")
+      .select("user_id, display_name, avatar_path")
+      .eq("user_id", uid)
       .single();
 
     if (error) throw error;
-    return data;
+    return data as {
+      user_id: string;
+      display_name: string | null;
+      avatar_path: string | null;
+    };
+  },
+
+  async patch(input: MePatchInput) {
+    const uid = await requireUserId();
+
+    // If an older caller sends avatar_url, map it.
+    const avatar_path =
+      typeof input.avatar_path !== "undefined"
+        ? input.avatar_path
+        : typeof input.avatar_url !== "undefined"
+          ? input.avatar_url
+          : undefined;
+
+    const patch: Record<string, any> = {};
+    if (typeof input.display_name !== "undefined") patch.display_name = input.display_name;
+    if (typeof avatar_path !== "undefined") patch.avatar_path = avatar_path;
+
+    const { error } = await supabase.from("user_profiles").update(patch).eq("user_id", uid);
+
+    if (error) throw error;
+
+    return { ok: true };
   },
 };

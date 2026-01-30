@@ -1,6 +1,5 @@
 // apps/mobile/app/_layout.tsx
-import { useEffect } from "react";
-import { View } from "react-native";
+import { useEffect, useMemo } from "react";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
@@ -9,28 +8,26 @@ import { AppLockProvider } from "../src/security/AppLockProvider";
 import { AppLockGate } from "../src/security/AppLockGate";
 import { SessionProvider } from "../src/ctx/session";
 
-import { enableScreens } from "react-native-screens";
-enableScreens(false);
-
-// Recommended at module scope so it runs before the first render.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function RootStack() {
   const { theme, isReady } = useTheme();
 
-  // While ThemeProvider/useTheme initializes, keep a stable background.
-  if (!isReady || !theme) {
-    return <View style={{ flex: 1, backgroundColor: "#ffffff" }} />;
-  }
+  const screenOptions = useMemo(() => {
+    // Always return options; fall back until theme is ready.
+    const primary = theme?.colors?.primary ?? "#111827";
+    const onPrimary = theme?.colors?.onPrimary ?? "#ffffff";
+    const background = theme?.colors?.background ?? "#ffffff";
+
+    return {
+      headerStyle: { backgroundColor: primary },
+      headerTintColor: onPrimary,
+      contentStyle: { backgroundColor: background },
+    };
+  }, [theme]);
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: { backgroundColor: theme.colors.primary },
-        headerTintColor: theme.colors.onPrimary ?? "#ffffff",
-        contentStyle: { backgroundColor: theme.colors.background },
-      }}
-    >
+    <Stack screenOptions={screenOptions}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="create-event" options={{ title: "Create Event" }} />
@@ -53,9 +50,6 @@ function AppBootstrap() {
       SplashScreen.hideAsync().catch(() => {});
     }
   }, [fontsLoaded, themeReady]);
-
-  // Keep splash screen visible until both are ready.
-  if (!fontsLoaded || !themeReady) return null;
 
   return (
     <AppLockProvider policy="optional">

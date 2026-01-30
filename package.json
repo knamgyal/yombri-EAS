@@ -2,7 +2,10 @@
   "name": "yombri",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
+    "build:packages": "pnpm -r --filter \"./packages/**\" --if-present run build",
+
     "eas:mobile": "cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION",
     "eas:mobile:version": "cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION --version",
     "eas:mobile:config:ios": "cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION config -p ios",
@@ -13,6 +16,7 @@
     "eas:mobile:build:android:cloud:production": "bash ./scripts/eas-guard.sh production && cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION build -p android --profile production",
     "eas:mobile:build:ios:cloud:production": "bash ./scripts/eas-guard.sh production && cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION build -p ios --profile production",
     "eas:mobile:build:ios:dev": "cd apps/mobile && EAS_CLI_VERSION=16.28.0 pnpm dlx eas-cli@$EAS_CLI_VERSION build -p ios --profile development --clear-cache",
+
     "mobile": "pnpm --filter @yombri/mobile exec npx expo start",
     "mobile:android": "pnpm --filter @yombri/mobile exec npx expo run:android",
     "mobile:clear": "pnpm --filter @yombri/mobile exec npx expo start --clear",
@@ -27,16 +31,10 @@
     "turbo": "^1.11.0",
     "typescript": "^5.3.3"
   },
-  "packageManager": "pnpm@9.0.0",
-  
   "pnpm": {
     "overrides": {
       "react": "19.1.0",
       "react-native": "0.81.5"
     }
-  },
-
-  "dependencies": {
-    "expo-constants": "~18.0.0"
   }
 }

@@ -1,13 +1,12 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { Tabs } from 'expo-router';
-import { useTheme } from '@yombri/native-runtime';
-import { TabBarBackground } from '../../components/TabBarBackground';
+import React from "react";
+import { Platform, Text } from "react-native";
+import { Redirect, Tabs } from "expo-router";
+import { useTheme } from "@yombri/native-runtime";
+import { useSession } from "../../src/ctx/session";
+import { TabBarBackground } from "../../components/TabBarBackground";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function TabsLayout() {
-<<<<<<< Updated upstream
-  const { theme } = useTheme();
-=======
   const { theme, isReady } = useTheme();
   const { session, isLoading } = useSession();
 
@@ -15,26 +14,72 @@ export default function TabsLayout() {
   const shouldRedirect = !isAppLoading && !session;
 
   if (isAppLoading) return <Text>Loading...</Text>;
-  if (shouldRedirect) return <Redirect href="/(auth)/sign-in" />;
->>>>>>> Stashed changes
+  if (shouldRedirect) return <Redirect href="/sign-in" />;
 
   return (
     <Tabs
       screenOptions={{
         headerStyle: { backgroundColor: theme.colors.primary },
-        headerTintColor: theme.colors.onPrimary ?? '#ffffff',
+        headerTintColor: theme.colors.onPrimary ?? "#ffffff",
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.text.secondary,
         tabBarShowLabel: false,
-
         tabBarBackground: () => <TabBarBackground />,
         tabBarStyle: Platform.select({
-          ios: { position: 'absolute' }, // recommended when using BlurView behind the tab bar
+          ios: { position: "absolute" },
           default: {},
         }),
       }}
     >
-      {/* Screens unchanged */}
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="home" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="feed"
+        options={{
+          title: "Feed",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="list" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="activity"
+        options={{
+          title: "Activity",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="bolt" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="my-events"
+        options={{
+          title: "My Events",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="calendar" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

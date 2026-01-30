@@ -36,10 +36,16 @@
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
+      "plugins": [
       "expo-router",
       "expo-font",
       "expo-dev-client",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos to set your avatar."
+        }
+      ],
       [
         "expo-local-authentication",
         {

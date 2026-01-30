@@ -4,17 +4,25 @@
     "requireCommit": false
   },
   "build": {
+    "base": {
+      "node": "20.19.4",
+      "pnpm": "9.0.0"
+    },
     "production": {
-      "distribution": "store"
+      "extends": "base",
+      "distribution": "store",
+      "environment": "production"
     },
     "preview": {
       "extends": "production",
-      "distribution": "internal"
+      "distribution": "internal",
+      "environment": "preview"
     },
     "development": {
       "extends": "production",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "environment": "development"
     }
   }
 }

@@ -82,3 +82,6 @@ apps/mobile/assets/1024 x 1024 yombri.png
 apps/mobile/assets/48 x 48 yombri.png
 apps/mobile/assets/1536 x 1024.png
 apps/mobile/assets/adaptive-icon-blue-Copy.png
+
+# Supabase local
+supabase/.temp/
