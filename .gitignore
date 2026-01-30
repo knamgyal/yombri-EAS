@@ -85,3 +85,6 @@ apps/mobile/assets/adaptive-icon-blue-Copy.png
 
 # Supabase local
 supabase/.temp/
+
+# Supabase snippets (local)
+supabase/snippets/
