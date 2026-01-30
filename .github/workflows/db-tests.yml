@@ -1,0 +1,26 @@
+name: DB tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pgtap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase (local)
+        run: supabase start
+
+      - name: Reset DB (migrations + seed.sql)
+        run: supabase db reset
+
+      - name: Run pgTAP tests
+        run: supabase test db
