@@ -8,9 +8,10 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function TabsLayout() {
   const { theme, isReady } = useTheme();
-  const { session, isLoading } = useSession();
+  const { session, loading } = useSession(); //updated to fix. apps/mobile/app/(tabs)/_layout.tsx reads isLoading from useSession(), but the session context exposes loading
 
-  const isAppLoading = !isReady || !theme || isLoading;
+  const isAppLoading = !isReady || !theme || loading; //updated
+
   const shouldRedirect = !isAppLoading && !session;
 
   if (isAppLoading) return <Text>Loading...</Text>;
